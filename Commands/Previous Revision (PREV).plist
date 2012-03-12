@@ -13,9 +13,11 @@ require_cmd "${TM_SVN:=svn}" "If you have installed svn, then you need to either
 
 require_cmd opendiff "You must install the Apple developer tools to run FileMerge."
 
+export TM_SVN
+
 # See if the current file is under svn control
 FILE=`basename "$TM_FILEPATH"`
-INFO_LINES=`svn info "$FILE" 2&gt;&amp;1 | grep "^Path\: .*\$" | wc -l`
+INFO_LINES=`"$TM_SVN" info "$FILE" 2&gt;&amp;1 | grep "^Path\: .*\$" | wc -l`
 
 if [ $INFO_LINES -eq 0 ]; then
 	echo "The current file is not under subversion control"
