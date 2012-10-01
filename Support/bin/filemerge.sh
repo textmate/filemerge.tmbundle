@@ -15,7 +15,7 @@ fi
 
 # See if there is any difference between the revisions
 FILE=`basename "$TM_FILEPATH"`
-SIZE=`svn diff -r "$REVS" "$FILE" | wc -m`
+SIZE=`${TM_SVN:-svn} diff -r "$REVS" "$FILE" | wc -m`
 
 if [ $SIZE -eq 0 ]; then
 	echo "No difference"
@@ -33,9 +33,9 @@ svn cat -r "$1" "$FILE" > "$OLDPATH"
 # of it with which to compare.
 if [ "$2" != "-" ]; then
 	NEWPATH=${OLDPATH}.2
-	svn cat -r "$2" "$FILE" > "$NEWPATH"
+	${TM_SVN:-svn} cat -r "$2" "$FILE" > "$NEWPATH"
 else
 	NEWPATH="$TM_FILEPATH"
 fi
 
-opendiff "$OLDPATH" "$NEWPATH" &>/dev/null &
+${TM_OPENDIFF:-opendiff} "$OLDPATH" "$NEWPATH" &>/dev/null &
